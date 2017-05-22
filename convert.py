@@ -1,10 +1,7 @@
 import csv
 import sys
 
-"""
-This program will convert a file from historical.elections.virginia.gov to one usable in the database and put in on stdout.
-"""
-
+#Parse a string like the one below into year and election name
 """Virginia_Elections_Database__2000_President_General_Election.csv"""
 seekstring = "Virginia_Elections_Database__"
 start = sys.argv[1].rindex(seekstring) + len(seekstring)
@@ -14,12 +11,14 @@ year = data[:ystart]
 dindex = data.rindex(".")
 election = data[ystart+1:dindex]
 
+#open input file
 try:
 	inputfile = open(sys.argv[1])
 except:
 	print("You must give an input file as the argument.")
 	sys.exit(0)
 
+#convert CSV
 reader = csv.reader(inputfile)
 l = list(reader) #two-level list read from CSV
 writer = csv.writer(sys.stdout)
