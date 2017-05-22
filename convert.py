@@ -2,10 +2,16 @@ import csv
 import sys
 
 """
-This program will convert a file from historical.elections.virginia.gov to one usable in the database.
+This program will convert a file from historical.elections.virginia.gov to one usable in the database and put in on stdout.
 """
 
-reader = csv.reader(sys.stdin)
+try:
+	inputfile = open(argv[1])
+except:
+	print("You must give an input file as the argument.")
+	sys.exit(0)
+
+reader = csv.reader(inputfile)
 l = list(reader) #two-level list read from CSV
 writer = csv.writer(sys.stdout)
 for i in range(len(l[0]))[3:]: #iterate through candidates
