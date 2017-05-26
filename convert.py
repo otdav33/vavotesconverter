@@ -2,7 +2,7 @@ import csv
 import sys
 
 #Parse a string like the one below into year and election name
-"""Virginia_Elections_Database__2000_President_General_Election.csv"""
+"""/home/Virginia_Elections_Database__2000_President_General_Election.csv"""
 seekstring = "Virginia_Elections_Database__"
 start = sys.argv[1].rindex(seekstring) + len(seekstring)
 data = sys.argv[1][start:]
@@ -20,15 +20,18 @@ except:
 
 #convert CSV
 reader = csv.reader(inputfile)
+
+print("INSERT INTO election (year, type) VALUES (" + year + ", '" + election + "');")
+
 l = list(reader) #two-level list read from CSV
-writer = csv.writer(sys.stdout)
 for i in range(len(l[0]))[3:]: #iterate through candidates
 	name = l[0][i]
 	try:
 		party = l[1][i]
 	except:
 		party = ""
-	c = [name, party]
+	#INSERT a new candidate unless it is there already 
+	print("INSERT INTO candidate (name, party) SELECT ('" + name + "', '" + party + "') WHERE NOT EXISTS (SELECT name, party FROM candidate WHERE name = '" + name + "' AND party = '" + party + "');")
 	for r in l[2:]: #iterate through counties
-		#add a new output row of candidate name, party, county, votes
-		writer.writerow(c + [r[0], r[i], year, election])
+		#add a new output row of candidate name, party, county, votes, etc
+		print("INSERT INTO votes VALUES ((SELECT id FROM area WHERE name = '" + r[0] + "'), (SELECT id FROM candidate WHERE name = '" + name + "' AND party = '" + party + "'), (SELECT id FROM election WHERE year = " + year + " AND type = '" + election + "'), " + r[i] + ");")
