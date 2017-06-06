@@ -34,4 +34,4 @@ for i in range(len(l[0]))[3:]: #iterate through candidates
 	print("INSERT INTO candidate (name, party) SELECT ('" + name + "', '" + party + "') WHERE NOT EXISTS (SELECT name, party FROM candidate WHERE name = '" + name + "' AND party = '" + party + "');")
 	for r in l[2:]: #iterate through counties
 		#add a new output row of candidate name, party, county, votes, etc
-		print("INSERT INTO votes VALUES ((SELECT id FROM area WHERE name = '" + r[0] + "'), (SELECT id FROM candidate WHERE name = '" + name + "' AND party = '" + party + "'), (SELECT id FROM election WHERE year = " + year + " AND type = '" + election + "'), " + r[i] + ");")
+		print("INSERT INTO votes VALUES ((SELECT number FROM area WHERE precinct = '" + r[0] + "'), (SELECT id FROM candidate WHERE name = '" + name + "' AND party = '" + party + "'), (SELECT id FROM election WHERE year = " + year + " AND type = '" + election + "'), " + r[i] + ");")
